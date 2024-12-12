@@ -133,3 +133,9 @@ dist
 *.iml
 
 .idea/
+
+*.swp
+*.swo
+*.swn
+*.orig
+

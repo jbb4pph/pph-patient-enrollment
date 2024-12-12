@@ -6,13 +6,22 @@ type EnrollmentStatus =
   | "Patient Record Created"
   | "Intake Appointment Scheduled";
 
-export type Patient = {
+export type Patient = NewPatient & {
   id: number;
+  rafScore?: number
+}
+
+export type NewPatient = {
   name: string;
   enrollmentStatus: EnrollmentStatus;
 }
 
-type RiskProfileSegment = "CFA" | "CFD" | "CNA" | "CND" | "CPA" | "CPD" | "INS" | "NE" | "SNPNE";
+export type RiskProfileSegment = "CFA" | "CFD" | "CNA" | "CND" | "CPA" | "CPD" | "INS" | "NE" | "SNPNE";
+
+export type HighestRiskProfileSegment = {
+  name: RiskProfileSegment
+  score: number
+}
 
 export type PatientRiskProfile = {
   deletedAt?: Date;

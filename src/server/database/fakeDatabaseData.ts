@@ -1,17 +1,43 @@
+import { calcRAFScore } from '../lib';
 import type { Patient, PatientRiskProfile } from "../types";
 
-export const patients = [
-  {
-    id: 1001,
-    name: "John Doe",
-    enrollmentStatus: "Prospect",
-  },
-  {
-    id: 1002,
-    name: "Jane Doe",
-    enrollmentStatus: "Insurance Eligibility Verified",
+/**
+ * @module patients
+ * Wrapped the patients in an IIFE which returns a getter and setter.
+ * This allows other parts of the application access to the latest
+ * data.
+ *
+ * @see src/server/database/helpers.ts
+ * Updated the patientsById function such that it uses the getter.
+ **/
+export const {patients, add_patient, get_patients}  = (() => {
+
+  const patients: Patient[] = [
+    {
+      id: 1001,
+      name: "John Doe",
+      enrollmentStatus: "Prospect",
+    },
+    {
+      id: 1002,
+      name: "Jane Doe",
+      enrollmentStatus: "Insurance Eligibility Verified",
+    }
+  ] satisfies Patient[];
+
+  const add_patient = (p: Patient) => {
+    patients.push(p);
   }
-] satisfies Patient[];
+
+  const get_patients = () => patients.map(p => {
+    return {
+      ...p,
+      rafScore: calcRAFScore(p.id)
+    }
+  });
+
+  return { patients, add_patient, get_patients };
+})();
 
 export const patientRiskProfiles = [
   {
